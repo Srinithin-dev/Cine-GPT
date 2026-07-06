@@ -1,8 +1,8 @@
 import "./App.css";
+import Body from "./components/Body";
 
 function App() {
-  console.log("lkj");
-  return <div className="text-xl text-red-600">Hi there</div>;
+  return <Body />;
 }
 
 export default App;
