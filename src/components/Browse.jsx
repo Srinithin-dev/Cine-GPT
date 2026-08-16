@@ -4,7 +4,10 @@ import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router";
 import { Search, Sparkles, Play, Plus, Star, ArrowRight } from "lucide-react";
 import Header from "./Header";
-import { useEffect } from "react";
+import { useDebugValue, useEffect } from "react";
+import { addMoviesList } from "../store/movieSlice";
+import usePlayingNowMovies from "../hooks/usePlayingNowMovies";
+import VideoContainer from "./VideoContainer";
 
 const SUGGESTIONS = [
   "Indian horror-comedy",
@@ -237,9 +240,9 @@ const Row = ({ row }) => (
 );
 
 const Browse = () => {
+  usePlayingNowMovies();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
-
   const handleSignOut = () => {
     signOut(auth);
   };
@@ -247,7 +250,7 @@ const Browse = () => {
   return (
     <div className="min-h-screen bg-[#0A0A0F] text-zinc-100">
       <Header user={user} onSignOut={handleSignOut} />
-
+      <VideoContainer />
       <div className="cg-aurora relative overflow-hidden">
         <div className="cg-grid absolute inset-0 opacity-60" />
 

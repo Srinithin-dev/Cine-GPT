@@ -9,3 +9,13 @@
 - Sign Out
 - Google SSO
 - Browse Page
+- Session handled using useAuthorization hook
+- Registered TMDB App and generated api key (for that deployed app in vercel to register the app)
+- Get Data from the TMDB (now playing movies api)
+- Custom hook for the playing now movies
+- Create movieSlice to store the list of nowPlayingMovie
+- Update Store With the Data
+- Get Trailer Video for the home screen
+- Stored in movieSlice
+- Embedded Iframe of Youtube with auto-play and mute
+-
