@@ -1,6 +1,16 @@
 import { Clapperboard, Search, ChevronDown } from "lucide-react";
+import { useDispatch } from "react-redux";
+import Auth from "./Auth";
+import { useEffect, useState } from "react";
+import { auth, onAuthStateChanged } from "../utils/firebase";
+import { addUser, removeUser } from "../store/userSlice";
+import { useNavigate } from "react-router";
+import useAuthorization from "../hooks/useAuthorization";
 
 const Header = ({ user, onSignOut }) => {
+  useAuthorization();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const initial = (user?.displayName || user?.email || "U")
     .charAt(0)
     .toUpperCase();
@@ -48,11 +58,22 @@ const Header = ({ user, onSignOut }) => {
         </button>
 
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2">
-            <div className="grid h-8 w-8 place-items-center rounded-full bg-gradient-to-br from-indigo-500/80 to-purple-500/80 text-[13px] font-semibold text-white">
-              {initial}
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
+              <div className="grid h-8 w-8 overflow-hidden place-items-center rounded-full bg-gradient-to-br from-indigo-500/80 to-purple-500/80 text-[13px] font-semibold text-white">
+                <img
+                  src={user?.photoURL}
+                  alt={user?.displayName || "User profile"}
+                  className="h-full w-full object-cover"
+                />
+              </div>
+              <div>{user?.displayName}</div>
+
+              <ChevronDown
+                size={14}
+                className="hidden text-zinc-500 sm:block"
+              />
             </div>
-            <ChevronDown size={14} className="hidden text-zinc-500 sm:block" />
           </div>
 
           {onSignOut && (

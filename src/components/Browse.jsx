@@ -4,6 +4,7 @@ import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router";
 import { Search, Sparkles, Play, Plus, Star, ArrowRight } from "lucide-react";
 import Header from "./Header";
+import { useEffect } from "react";
 
 const SUGGESTIONS = [
   "Indian horror-comedy",
@@ -240,9 +241,7 @@ const Browse = () => {
   const user = useSelector((state) => state.user);
 
   const handleSignOut = () => {
-    signOut(auth)
-      .then(() => navigate("/"))
-      .catch((err) => console.log(err, "error"));
+    signOut(auth);
   };
 
   return (

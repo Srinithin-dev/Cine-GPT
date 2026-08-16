@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Eye,
   EyeOff,
@@ -11,6 +11,7 @@ import {
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth";
 import { auth, signInWithPopup, GoogleAuthProvider } from "../utils/firebase";
 import { useNavigate } from "react-router";
@@ -22,6 +23,10 @@ import {
   validateConfirmPassword,
   getAuthErrorMessage,
 } from "../utils/Form-Validate";
+import { useDispatch } from "react-redux";
+import { updateUser } from "../store/userSlice";
+import useAuthorization from "../hooks/useAuthorization";
+import { PROFILE_PHOTO_URL } from "../utils/constants";
 
 const SAMPLE_PROMPTS = [
   "Indian horror-comedy from the last 5 years",
@@ -60,9 +65,11 @@ const inputClass = (hasError) =>
   ].join(" ");
 
 const Auth = () => {
+  useAuthorization();
+
   const provider = new GoogleAuthProvider();
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const [isSignUp, setIsSignUp] = useState(false);
   const [showPwd, setShowPwd] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -133,12 +140,20 @@ const Auth = () => {
 
     if (isSignUp) {
       createUserWithEmailAndPassword(auth, values.email, values.password)
-        .then(() => navigate("/browse"))
+        .then((userCredentials) => {
+          updateProfile(userCredentials.user, {
+            displayName: values.name,
+            photoURL: PROFILE_PHOTO_URL,
+          }).then(() => {
+            const { uid, displayName, email, photoURL } = auth.currentUser;
+            dispatch(updateUser({ uid, displayName, email, photoURL }));
+          });
+        })
         .catch((error) => setFormError(getAuthErrorMessage(error)))
         .finally(() => setSubmitting(false));
     } else {
       signInWithEmailAndPassword(auth, values.email, values.password)
-        .then(() => navigate("/browse"))
+        .then(() => {})
         .catch((error) => setFormError(getAuthErrorMessage(error)))
         .finally(() => setSubmitting(false));
     }
@@ -146,11 +161,10 @@ const Auth = () => {
 
   const handleSSO = () => {
     setFormError("");
-    signInWithPopup(auth, provider)
-      .then(() => navigate("/browse"))
-      .catch((error) => setFormError(getAuthErrorMessage(error)));
+    signInWithPopup(auth, provider).catch((error) =>
+      setFormError(getAuthErrorMessage(error)),
+    );
   };
-
   return (
     <div className="cg-aurora relative min-h-screen w-full overflow-hidden bg-[#0A0A0F]">
       <div className="cg-grid absolute inset-0 opacity-70" />
