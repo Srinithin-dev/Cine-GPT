@@ -18,4 +18,3 @@
 - Get Trailer Video for the home screen
 - Stored in movieSlice
 - Embedded Iframe of Youtube with auto-play and mute
--
