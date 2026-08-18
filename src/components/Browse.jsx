@@ -8,6 +8,7 @@ import usePlayingNowMovies from "../hooks/usePlayingNowMovies";
 import Header from "./Header";
 import VideoContainer from "./VideoContainer";
 import MovieList from "./MovieList";
+import { languageConstants } from "../utils/languageConstants";
 
 const SUGGESTIONS = [
   "Indian horror-comedy",
@@ -19,12 +20,10 @@ const SUGGESTIONS = [
 
 const Browse = () => {
   usePlayingNowMovies();
-
+  const language = useSelector((state) => state.lang.default);
   const user = useSelector((state) => state.user);
   const nowPlaying = useSelector((state) => state.movie?.nowPlayingMovies);
-
   const movies = Array.isArray(nowPlaying) ? nowPlaying : [];
-
   const rows = useMemo(() => {
     const byRating = [...movies].sort(
       (a, b) => (b.vote_average ?? 0) - (a.vote_average ?? 0),
@@ -85,7 +84,7 @@ const Browse = () => {
           </div>
 
           <div className="mt-3.5 flex flex-wrap justify-center gap-2">
-            {SUGGESTIONS.map((s) => (
+            {languageConstants[language].SUGGESTIONS.map((s) => (
               <button
                 key={s}
                 type="button"

@@ -1,20 +1,25 @@
 import { Clapperboard, Search, ChevronDown } from "lucide-react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Auth from "./Auth";
 import { useEffect, useState } from "react";
 import { auth, onAuthStateChanged } from "../utils/firebase";
 import { addUser, removeUser } from "../store/userSlice";
 import { useNavigate } from "react-router";
 import useAuthorization from "../hooks/useAuthorization";
+import { changeLanguage } from "../store/multi-LanguageSlice";
+import { languageConstants } from "../utils/languageConstants";
+import { SUPPORT_LANGUAGES } from "../utils/constants";
 
 const Header = ({ user, onSignOut }) => {
   useAuthorization();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [lang, setLang] = useState(SUPPORT_LANGUAGES[0].name);
+  const language = useSelector((state) => state.lang.default);
+
   const initial = (user?.displayName || user?.email || "U")
     .charAt(0)
     .toUpperCase();
-
   return (
     <header className="sticky top-0 z-50 border-b border-white/[0.06] bg-[#0A0A0F]/80 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-8 px-6">
@@ -28,7 +33,7 @@ const Header = ({ user, onSignOut }) => {
         </div>
 
         <nav className="hidden items-center gap-1 md:flex">
-          {["Discover", "My List", "Collections"].map((item, i) => (
+          {languageConstants[language]?.headerNav.map((item, i) => (
             <a
               key={item}
               href="#"
@@ -56,7 +61,20 @@ const Header = ({ user, onSignOut }) => {
             ⌘K
           </kbd>
         </button>
-
+        <select
+          className="p-4 bg-transparent"
+          value={lang}
+          onChange={(e) => {
+            dispatch(changeLanguage(e.target.value));
+            setLang(e.target.value);
+          }}
+        >
+          {SUPPORT_LANGUAGES.map((lang) => (
+            <option key={lang.identifier} value={lang.identifier}>
+              {lang.name}
+            </option>
+          ))}
+        </select>
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2">
