@@ -12,3 +12,9 @@ export const OPTIONS = {
       "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkNDY1ZmIyYzQ5NzNjZDhlYjEyYmUwMDk3OTYwNWRhNyIsIm5iZiI6MTc4Njg2NDc5NS40NzQsInN1YiI6IjZhODE2NDliYjQ4M2RkMjdjODJiMTNjMSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.nU09xUsdAq8SyB8Cq7bfuRubJmabbld7LjnuVdFWeh4",
   },
 };
+
+export const SUPPORT_LANGUAGES = [
+  { identifier: "en", name: "English" },
+  { identifier: "hi", name: "Hindi" },
+  // { identifier: "ta", name: "Tamil" },
+];

@@ -18,3 +18,6 @@
 - Get Trailer Video for the home screen
 - Stored in movieSlice
 - Embedded Iframe of Youtube with auto-play and mute
+- Support Multi Language (English,Hindi,Tamil)
+- Created Multi-Language slice and stored the value
+- Created a constant file for languages
