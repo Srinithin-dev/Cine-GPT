@@ -21,3 +21,8 @@
 - Support Multi Language (English,Hindi,Tamil)
 - Created Multi-Language slice and stored the value
 - Created a constant file for languages
+- Converted all the text in hindi and tamil in language constants
+- Created a separate view for gpt and default
+- Added new state of searchResults in movieSlice
+- Fetch Ott provider and listed under the movie card section
+- (Bug Fix) - authorized domain mapped in firebase for the SSO signin
