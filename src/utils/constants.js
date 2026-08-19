@@ -18,3 +18,4 @@ export const SUPPORT_LANGUAGES = [
   { identifier: "hi", name: "Hindi" },
   // { identifier: "ta", name: "Tamil" },
 ];
+export const GEMINI_KEY = "gemini api key";
