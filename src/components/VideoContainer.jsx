@@ -3,17 +3,14 @@ import { useSelector } from "react-redux";
 import { Volume2, VolumeX, RotateCcw } from "lucide-react";
 import useMovieTrailer from "../hooks/useMovieTrailer";
 import { BACKDROP_CDN_URL } from "../utils/constants";
+import { getLanguage } from "../utils/languageConstants";
 import VideoTitle from "./VideoTitle";
 
-/**
- * Cinematic hero.
- *
- * The iframe is sized to *cover* the hero box (16:9 scaled up on both axes) so
- * you never see letterbox bars, and it's pointer-events-none so the YouTube
- * chrome can't steal clicks from the CTAs layered on top.
- */
 const VideoContainer = () => {
   useMovieTrailer();
+
+  const language = useSelector((state) => state.lang.default);
+  const t = getLanguage(language);
 
   const movies = useSelector((state) => state.movie?.nowPlayingMovies);
   const trailerKey = useSelector((state) => state.movie?.trailerVideo?.key);
@@ -119,7 +116,7 @@ const VideoContainer = () => {
           <button
             type="button"
             onClick={replay}
-            aria-label="Replay trailer"
+            aria-label={t.hero.replay}
             className="grid h-10 w-10 place-items-center rounded-full bg-black/40 text-white ring-1 ring-white/25 backdrop-blur transition hover:bg-black/60"
           >
             <RotateCcw size={16} />
@@ -127,7 +124,7 @@ const VideoContainer = () => {
           <button
             type="button"
             onClick={toggleMute}
-            aria-label={muted ? "Unmute trailer" : "Mute trailer"}
+            aria-label={muted ? t.hero.unmute : t.hero.mute}
             className="grid h-10 w-10 place-items-center rounded-full bg-black/40 text-white ring-1 ring-white/25 backdrop-blur transition hover:bg-black/60"
           >
             {muted ? <VolumeX size={16} /> : <Volume2 size={16} />}
