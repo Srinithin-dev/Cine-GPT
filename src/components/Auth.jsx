@@ -161,9 +161,10 @@ const Auth = () => {
 
   const handleSSO = () => {
     setFormError("");
-    signInWithPopup(auth, provider).catch((error) =>
-      setFormError(getAuthErrorMessage(error)),
-    );
+    signInWithPopup(auth, provider).catch((error) => {
+      console.log(error, "from handle sso function");
+      setFormError(getAuthErrorMessage(error));
+    });
   };
   return (
     <div className="cg-aurora relative min-h-screen w-full overflow-hidden bg-[#0A0A0F]">

@@ -14,8 +14,8 @@ export const OPTIONS = {
 };
 
 export const SUPPORT_LANGUAGES = [
-  { identifier: "en", name: "English" },
-  { identifier: "hi", name: "Hindi" },
-  // { identifier: "ta", name: "Tamil" },
+  { identifier: "en", name: "English", nativeName: "English" },
+  { identifier: "hi", name: "Hindi", nativeName: "हिन्दी" },
+  { identifier: "ta", name: "Tamil", nativeName: "தமிழ்" },
 ];
 export const GEMINI_KEY = "gemini api key";
