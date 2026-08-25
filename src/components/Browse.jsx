@@ -1,7 +1,6 @@
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { signOut } from "firebase/auth";
-import { Search, Sparkles } from "lucide-react";
 
 import { auth } from "../utils/firebase";
 import usePlayingNowMovies from "../hooks/usePlayingNowMovies";
@@ -11,6 +10,9 @@ import Header from "./Header";
 import VideoContainer from "./VideoContainer";
 import MovieList from "./MovieList";
 import GptView from "./GptView";
+import SearchResults from "./SearchResults";
+
+const ROW_SIZE = 8;
 
 const Browse = () => {
   usePlayingNowMovies();
@@ -19,48 +21,56 @@ const Browse = () => {
   const t = getLanguage(language);
 
   const user = useSelector((state) => state.user);
-  const nowPlaying = useSelector((state) => state.movie?.nowPlayingMovies);
-  const nonGptResults = useSelector((state) => state.movie?.searchResults);
-  const movies = Array.isArray(
-    nonGptResults.length ? nonGptResults : nowPlaying,
-  )
-    ? nonGptResults.length
-      ? nonGptResults
-      : nowPlaying
-    : [];
 
-  const ref = useRef(null);
+  const nowPlayingRaw = useSelector((state) => state.movie?.nowPlayingMovies);
+  const searchRaw = useSelector((state) => state.movie?.searchResults);
+
+  const nowPlaying = Array.isArray(nowPlayingRaw) ? nowPlayingRaw : [];
+  const hasSearch = Array.isArray(searchRaw) && searchRaw.length > 0;
 
   const [isGptMode, setIsGptMode] = useState(false);
 
   const rows = useMemo(() => {
-    const byRating = [...movies].sort(
+    const remaining = [...nowPlaying];
+
+    const take = (comparator, count) => {
+      console.log(comparator, remaining, "comparator");
+      remaining.sort(comparator);
+      console.log(remaining, "remainingcomparator");
+
+      return remaining.splice(0, count);
+    };
+
+    const topRated = take(
       (a, b) => (b.vote_average ?? 0) - (a.vote_average ?? 0),
+      ROW_SIZE,
     );
-    const byPopularity = [...movies].sort(
+    const trending = take(
       (a, b) => (b.popularity ?? 0) - (a.popularity ?? 0),
+      ROW_SIZE,
     );
+
     return [
-      { title: t.rows.nowPlaying, subtitle: t.rows.nowPlayingSub, movies },
       {
         title: t.rows.topRated,
         subtitle: t.rows.topRatedSub,
-        movies: byRating,
+        movies: topRated,
       },
       {
         title: t.rows.trending,
         subtitle: t.rows.trendingSub,
-        movies: byPopularity,
+        movies: trending,
       },
-    ];
-  }, [movies, t]);
+      {
+        title: t.rows.nowPlaying,
+        subtitle: t.rows.nowPlayingSub,
+        movies: remaining,
+      },
+    ].filter((row) => row.movies.length > 0);
+  }, [nowPlaying, t]);
 
   const handleSignOut = () => {
     signOut(auth);
-  };
-
-  const handleClickSuggestion = (value) => {
-    ref.current.value = value;
   };
 
   return (
@@ -73,22 +83,33 @@ const Browse = () => {
       />
 
       {isGptMode ? (
-        /* ================= GPT search view ================= */
-        <GptView t={t} handleClickSuggestion={handleClickSuggestion} />
+        /* ============ GPT search ============ */
+        <GptView t={t} />
+      ) : hasSearch ? (
+        /* ============ Keyword search results ============ */
+        <SearchResults />
       ) : (
-        /* ================= Normal browse view ================= */
+        /* ============ Default browse ============ */
         <>
           <VideoContainer />
-
           <main className="mx-auto max-w-7xl pb-20 pt-4">
-            {rows.map((row) => (
+            {rows.length > 0 ? (
+              rows.map((row) => (
+                <MovieList
+                  key={row.title}
+                  title={row.title}
+                  subtitle={row.subtitle}
+                  movies={row.movies}
+                />
+              ))
+            ) : (
+              /* Shimmer */
               <MovieList
-                key={row.title}
-                title={row.title}
-                subtitle={row.subtitle}
-                movies={row.movies}
+                title={t.rows.topRated}
+                subtitle={t.rows.topRatedSub}
+                movies={[]}
               />
-            ))}
+            )}
           </main>
         </>
       )}
