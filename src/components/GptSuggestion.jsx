@@ -74,6 +74,7 @@ const GptSuggestion = () => {
               key={movie.id}
               movie={movie}
               variant="grid"
+              from="gpt"
               badge={t.gpt.aiPick}
               caption={
                 suggestedTitle &&
