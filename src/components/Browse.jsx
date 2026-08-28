@@ -34,10 +34,7 @@ const Browse = () => {
     const remaining = [...nowPlaying];
 
     const take = (comparator, count) => {
-      console.log(comparator, remaining, "comparator");
       remaining.sort(comparator);
-      console.log(remaining, "remainingcomparator");
-
       return remaining.splice(0, count);
     };
 

@@ -3,11 +3,12 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router";
 import { IMG_CDN_URL } from "../utils/constants";
 import { getLanguage } from "../utils/languageConstants";
-
+import { db } from "../utils/firebase";
+import { doc, setDoc } from "firebase/firestore";
 const MovieCard = ({ movie, variant = "row", badge, caption, from }) => {
   const language = useSelector((state) => state.lang.default);
   const t = getLanguage(language);
-
+  const loggedInUser = useSelector((state) => state.user);
   if (!movie) return null;
 
   const {
@@ -30,13 +31,19 @@ const MovieCard = ({ movie, variant = "row", badge, caption, from }) => {
   const width =
     variant === "grid" ? "w-full" : "w-[142px] shrink-0 sm:w-[168px]";
 
+  const handleAddToList = async (movie) => {
+    const docRef = doc(db, "MyMovieList", loggedInUser.id);
+    const stored = await setDoc(docRef(docRef, movie, { merge: true }));
+    console.log(docRef, stored, "movieID", movie);
+  };
+
   return (
     <div className={`group relative ${width}`}>
       <Link
         to={`/movie/${id}`}
         state={{ movie, from }}
         aria-label={displayTitle}
-        className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0A0F]"
+        className="flex flex-col gap-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0A0F]"
       >
         <div className="relative aspect-[2/3] overflow-hidden rounded-xl bg-[#14141C] ring-1 ring-white/[0.08] transition duration-300 group-hover:-translate-y-1 group-hover:ring-white/25">
           {posterPath ? (
@@ -54,7 +61,6 @@ const MovieCard = ({ movie, variant = "row", badge, caption, from }) => {
               </span>
             </div>
           )}
-
           {badge && (
             <span className="absolute left-2 top-2 z-10 inline-flex items-center gap-1 rounded-md bg-indigo-500/90 px-1.5 py-0.5 text-[9.5px] font-semibold uppercase tracking-wide text-white shadow-lg backdrop-blur">
               <Sparkles size={9} />
@@ -86,8 +92,19 @@ const MovieCard = ({ movie, variant = "row", badge, caption, from }) => {
             </div>
           </div>
         </div>
+        <button
+          type="button"
+          className={
+            "flex h-9 w-full justify-center shrink-0 items-center gap-2 rounded-lg px-3 text-[13px] font-medium transition bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-lg shadow-indigo-500/20 hover:brightness-110"
+          }
+          onClick={(e) => {
+            e.preventDefault();
+            handleAddToList(movie);
+          }}
+        >
+          Add To List
+        </button>
       </Link>
-
       {caption && (
         <p className="mt-1.5 truncate px-0.5 text-[11px] text-zinc-500">
           {caption}
