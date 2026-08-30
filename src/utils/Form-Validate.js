@@ -88,7 +88,6 @@ export const validateFields = (values = {}, options = {}) => {
 
 export const getAuthErrorMessage = (error) => {
   const code = error?.code ?? "";
-  console.log(error, "error");
   const map = {
     "auth/invalid-email": "That email address isn't valid.",
     "auth/user-disabled": "This account has been disabled.",

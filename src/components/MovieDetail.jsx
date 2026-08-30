@@ -13,6 +13,7 @@ import Header from "./Header";
 import MovieList from "./MovieList";
 import { IMG_CDN_URL, BACKDROP_CDN_URL } from "../utils/constants";
 import { getLanguage, fill } from "../utils/languageConstants";
+import useMovieDetail from "../hooks/useMovieDetail";
 
 const formatRuntime = (minutes, unit) =>
   Number.isFinite(minutes) && minutes > 0
@@ -102,25 +103,25 @@ const MovieDetail = () => {
 
   const passed = location.state?.movie ?? null;
 
-  // TODO: const { movie, loading } = useMovieDetail(id);
-  const movie = {
-    adult: false,
-    backdrop_path: "/r57L2UBLPKcHdZQYg8tagv9XqK2.jpg",
-    genre_ids: [12, 28, 14],
-    id: 1368337,
-    title: "The Odyssey",
-    original_language: "en",
-    original_title: "The Odyssey",
-    overview:
-      "Odysseus, the legendary King of Ithaca, embarks on a long and perilous journey home following the Trojan War. Throughout his voyage, he is forced to confront the whims of gods, mythological monsters, and trials that stretch both his cunning and his humanity to the breaking point.",
-    popularity: 778.47,
-    poster_path: "/5rhTDKUhPYvpdQIijFIs5VoWsON.jpg",
-    release_date: "2026-07-15",
-    softcore: false,
-    video: false,
-    vote_average: 7.991,
-    vote_count: 2926,
-  };
+  const { movie } = useMovieDetail(id);
+  // const movie = {
+  //   adult: false,
+  //   backdrop_path: "/r57L2UBLPKcHdZQYg8tagv9XqK2.jpg",
+  //   genre_ids: [12, 28, 14],
+  //   id: 1368337,
+  //   title: "The Odyssey",
+  //   original_language: "en",
+  //   original_title: "The Odyssey",
+  //   overview:
+  //     "Odysseus, the legendary King of Ithaca, embarks on a long and perilous journey home following the Trojan War. Throughout his voyage, he is forced to confront the whims of gods, mythological monsters, and trials that stretch both his cunning and his humanity to the breaking point.",
+  //   popularity: 778.47,
+  //   poster_path: "/5rhTDKUhPYvpdQIijFIs5VoWsON.jpg",
+  //   release_date: "2026-07-15",
+  //   softcore: false,
+  //   video: false,
+  //   vote_average: 7.991,
+  //   vote_count: 2926,
+  // };
   const loading = !movie;
 
   const fromLabel = "";

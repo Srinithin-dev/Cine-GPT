@@ -15,7 +15,6 @@ const useGptMovieSuggestion = () => {
     }
   }
   const gptSearchMovie = async (inputText) => {
-    console.log(inputText, "inputText");
     const instructions = `
     You are CineGPT, an intelligent movie recommendation engine.
     Understand the user's natural-language request and recommend movies based on their
