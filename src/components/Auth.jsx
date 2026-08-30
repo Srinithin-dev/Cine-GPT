@@ -162,7 +162,6 @@ const Auth = () => {
   const handleSSO = () => {
     setFormError("");
     signInWithPopup(auth, provider).catch((error) => {
-      console.log(error, "from handle sso function");
       setFormError(getAuthErrorMessage(error));
     });
   };

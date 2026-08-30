@@ -1,5 +1,5 @@
-import { useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useRef, useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   ChevronLeft,
   ChevronRight,
@@ -14,7 +14,9 @@ const Skeleton = () => (
     <div className="aspect-[2/3] rounded-xl bg-white/[0.05]" />
   </div>
 );
-
+import { doc, getDoc } from "firebase/firestore";
+import { setMovieList } from "../store/userSlice";
+import { db } from "../utils/firebase";
 /**
  * @param {string} title
  * @param {string} [subtitle]
@@ -22,8 +24,10 @@ const Skeleton = () => (
  * @param {boolean} [expandable=true]
  */
 const MovieList = ({ title, subtitle, movies, expandable = true }) => {
+  const dispatch = useDispatch();
   const language = useSelector((state) => state.lang.default);
   const translation = getLanguage(language);
+  const loggedInUser = useSelector((state) => state.user);
 
   const trackRef = useRef(null);
   const [expanded, setExpanded] = useState(false);
@@ -36,7 +40,18 @@ const MovieList = ({ title, subtitle, movies, expandable = true }) => {
     if (!el) return;
     el.scrollBy({ left: direction * el.clientWidth * 0.8, behavior: "smooth" });
   };
-
+  useEffect(() => {
+    const getAddedMovies = async () => {
+      if (!loggedInUser?.id) return;
+      const docRef = doc(db, "movieList", loggedInUser.id);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const addedMovies = docSnap.data().movies;
+        dispatch(setMovieList(addedMovies));
+      }
+    };
+    getAddedMovies();
+  }, [loggedInUser?.id]);
   return (
     <section className="group/row mt-9">
       <div className="mb-3.5 flex items-end justify-between gap-4 px-6">

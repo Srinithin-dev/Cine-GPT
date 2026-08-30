@@ -27,3 +27,4 @@
 - Fetch Ott provider and listed under the movie card section
 - (Bug Fix) - authorized domain mapped in firebase for the SSO signin
 - Individual Movies details view
+- Movie Added into the list to watch
