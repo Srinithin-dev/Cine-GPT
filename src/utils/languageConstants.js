@@ -9,7 +9,12 @@ const en = {
   },
 
   header: {
-    nav: ["Discover", "My List"],
+    /* `nav` items are now objects so they can actually route. Add a `path` and
+       it becomes a real link; the label is what gets translated. */
+    nav: [
+      { key: "discover", label: "Discover", path: "/browse" },
+      { key: "watchlist", label: "Watchlist", path: "/my-list" },
+    ],
     gptSearch: "Goto GPT Search",
     exitGptSearch: "Back to browse",
     language: "Language",
@@ -84,7 +89,36 @@ const en = {
     scrollRight: "Scroll right",
   },
 
-  card: { noOverview: "No description available." },
+  card: {
+    noOverview: "No description available.",
+    /* "Watchlist" over "My List" — it says what the list is FOR (save now,
+       watch later) instead of just who owns it. Same word on the card button,
+       the nav item and the page heading, so they read as one feature. */
+    save: "Watchlist",
+    saved: "Saved",
+    saving: "Saving",
+    saveAria: "Add {title} to your watchlist",
+    savedAria: "{title} is in your watchlist",
+  },
+
+  myList: {
+    title: "Your Watchlist",
+    subtitle: "Everything you've saved, in one place.",
+    count: "{n} saved",
+    countOne: "1 saved",
+    emptyHeading: "Nothing saved yet",
+    emptyBody:
+      "Hit Watchlist on any poster and it'll show up here — a place to park the films you'll actually get around to.",
+    emptyCta: "Browse titles",
+    sortLabel: "Sort",
+    sortRecent: "Recently added",
+    sortTitle: "Title A–Z",
+    sortRating: "Highest rated",
+    sortYear: "Newest first",
+    statTitles: "Titles",
+    statAvgRating: "Avg. rating",
+    statDecades: "Decades",
+  },
 
   detail: {
     back: "Back",
@@ -144,7 +178,10 @@ const hi = {
   meta: { label: "Hindi", nativeName: "हिन्दी", dir: "ltr", locale: "hi-IN" },
 
   header: {
-    nav: ["खोजें", "मेरी सूची"],
+    nav: [
+      { key: "discover", label: "खोजें", path: "/browse" },
+      { key: "watchlist", label: "वॉचलिस्ट", path: "/my-list" },
+    ],
     gptSearch: "GPT खोज",
     exitGptSearch: "ब्राउज़ पर वापस",
     language: "भाषा",
@@ -220,7 +257,33 @@ const hi = {
     scrollRight: "दाएँ स्क्रॉल करें",
   },
 
-  card: { noOverview: "कोई विवरण उपलब्ध नहीं।" },
+  card: {
+    noOverview: "कोई विवरण उपलब्ध नहीं।",
+    save: "वॉचलिस्ट",
+    saved: "सेव किया",
+    saving: "सेव हो रहा है",
+    saveAria: "{title} को वॉचलिस्ट में जोड़ें",
+    savedAria: "{title} आपकी वॉचलिस्ट में है",
+  },
+
+  myList: {
+    title: "आपकी वॉचलिस्ट",
+    subtitle: "आपने जो कुछ सेव किया, सब एक जगह।",
+    count: "{n} सेव किए",
+    countOne: "1 सेव किया",
+    emptyHeading: "अभी कुछ सेव नहीं किया",
+    emptyBody:
+      "किसी भी पोस्टर पर वॉचलिस्ट दबाएँ और वह यहाँ दिखने लगेगी — जो फ़िल्में आप असल में देखेंगे, उन्हें यहाँ रखें।",
+    emptyCta: "फ़िल्में देखें",
+    sortLabel: "क्रम",
+    sortRecent: "हाल में जोड़ी गईं",
+    sortTitle: "नाम अ–ज्ञ",
+    sortRating: "सबसे अधिक रेटिंग",
+    sortYear: "सबसे नई पहले",
+    statTitles: "फ़िल्में",
+    statAvgRating: "औसत रेटिंग",
+    statDecades: "दशक",
+  },
 
   detail: {
     back: "वापस",
@@ -283,7 +346,10 @@ const ta = {
   meta: { label: "Tamil", nativeName: "தமிழ்", dir: "ltr", locale: "ta-IN" },
 
   header: {
-    nav: ["கண்டறி", "எனது பட்டியல்"],
+    nav: [
+      { key: "discover", label: "கண்டறி", path: "/browse" },
+      { key: "watchlist", label: "பார்க்க வேண்டியவை", path: "/my-list" },
+    ],
     gptSearch: "GPT தேடல்",
     exitGptSearch: "உலாவலுக்குத் திரும்பு",
     language: "மொழி",
@@ -359,7 +425,33 @@ const ta = {
     scrollRight: "வலதுபுறம் நகர்த்து",
   },
 
-  card: { noOverview: "விவரம் இல்லை." },
+  card: {
+    noOverview: "விவரம் இல்லை.",
+    save: "பட்டியலில் சேர்",
+    saved: "சேர்க்கப்பட்டது",
+    saving: "சேமிக்கிறது",
+    saveAria: "{title} ஐ உங்கள் பட்டியலில் சேர்",
+    savedAria: "{title} உங்கள் பட்டியலில் உள்ளது",
+  },
+
+  myList: {
+    title: "பார்க்க வேண்டியவை",
+    subtitle: "நீங்கள் சேமித்த அனைத்தும் ஒரே இடத்தில்.",
+    count: "{n} சேமிக்கப்பட்டவை",
+    countOne: "1 சேமிக்கப்பட்டது",
+    emptyHeading: "இன்னும் எதுவும் சேமிக்கப்படவில்லை",
+    emptyBody:
+      "எந்தப் போஸ்டரிலும் சேர் என்பதை அழுத்தினால் அது இங்கே தோன்றும் — நீங்கள் நிச்சயம் பார்க்கப் போகும் படங்களை இங்கே வைத்துக்கொள்ளுங்கள்.",
+    emptyCta: "படங்களைக் காண",
+    sortLabel: "வரிசை",
+    sortRecent: "சமீபத்தில் சேர்த்தவை",
+    sortTitle: "பெயர் அ–ஃ",
+    sortRating: "அதிக மதிப்பெண்",
+    sortYear: "புதியவை முதலில்",
+    statTitles: "படங்கள்",
+    statAvgRating: "சராசரி மதிப்பெண்",
+    statDecades: "தசாப்தங்கள்",
+  },
 
   detail: {
     back: "பின் செல்",
