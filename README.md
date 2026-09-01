@@ -28,3 +28,4 @@
 - (Bug Fix) - authorized domain mapped in firebase for the SSO signin
 - Individual Movies details view
 - Movie Added into the list to watch
+- (Bug Fix) - useAuthorization hook navigate the route to browse page

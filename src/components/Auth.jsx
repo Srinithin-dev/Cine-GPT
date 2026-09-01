@@ -68,7 +68,6 @@ const Auth = () => {
   useAuthorization();
 
   const provider = new GoogleAuthProvider();
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isSignUp, setIsSignUp] = useState(false);
   const [showPwd, setShowPwd] = useState(false);
@@ -181,10 +180,10 @@ const Auth = () => {
           </div>
 
           <h1 className="max-w-md text-[44px] font-semibold leading-[1.1] tracking-tight text-zinc-50">
-            Search films the way you{" "}
+            Search films the way you
             <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
               actually think
-            </span>{" "}
+            </span>
             about them.
           </h1>
 

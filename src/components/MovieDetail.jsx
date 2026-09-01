@@ -154,8 +154,7 @@ const MovieDetail = () => {
 
   return (
     <div className="min-h-screen bg-[#0A0A0F] text-zinc-100">
-      <Header />
-
+      {/* <Header /> */}
       {loading ? (
         <DetailSkeleton />
       ) : (
@@ -269,7 +268,6 @@ const MovieDetail = () => {
                   </p>
                 </section>
 
-                {/* Trailer */}
                 <section className="mt-12">
                   <SectionTitle>{t.detail.trailer}</SectionTitle>
                   {trailer ? (
@@ -427,14 +425,6 @@ const MovieDetail = () => {
                 </section>
               </aside>
             </div>
-          </div>
-
-          <div className="mx-auto mt-8 max-w-7xl pb-20">
-            <MovieList
-              title={t.detail.similar}
-              movies={similar}
-              expandable={false}
-            />
           </div>
         </>
       )}

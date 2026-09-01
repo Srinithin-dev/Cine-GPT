@@ -5,7 +5,9 @@ import {
   Globe,
   Search,
   X,
+  Bookmark,
 } from "lucide-react";
+import { Link, useLocation } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { useRef } from "react";
 import useAuthorization from "../hooks/useAuthorization";
@@ -32,6 +34,9 @@ const Header = ({ user, onSignOut, isGptMode = false, onToggleGptMode }) => {
     (state) => (state.movie?.searchResults?.length ?? 0) > 0,
   );
 
+  const savedCount = useSelector((state) => state.user?.movies?.length ?? 0);
+  const { pathname } = useLocation();
+
   const initial = (user?.displayName || user?.email || "U")
     .charAt(0)
     .toUpperCase();
@@ -52,35 +57,48 @@ const Header = ({ user, onSignOut, isGptMode = false, onToggleGptMode }) => {
     <header className="sticky top-0 z-50 border-b border-white/[0.06] bg-[#0A0A0F]/80 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-3 px-6 sm:gap-4">
         {/* Brand */}
-        <div className="flex shrink-0 items-center gap-2.5">
+        <Link to="/browse" className="flex shrink-0 items-center gap-2.5">
           <div className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-indigo-500 to-purple-500">
             <Clapperboard size={16} className="text-white" />
           </div>
           <span className="hidden text-[15px] font-semibold tracking-tight text-zinc-100 sm:block">
             CineGPT
           </span>
-        </div>
+        </Link>
 
         {!isGptMode && (
           <nav className="hidden items-center gap-1 lg:flex">
-            {t.header.nav.map((item, i) => (
-              <a
-                key={item}
-                href="#"
-                className={[
-                  "rounded-md px-3 py-1.5 text-[13.5px] transition",
-                  i === 0
-                    ? "bg-white/[0.06] text-zinc-100"
-                    : "text-zinc-400 hover:text-zinc-100",
-                ].join(" ")}
-              >
-                {item}
-              </a>
-            ))}
+            {/* Active state now comes from the URL, not a hardcoded index. */}
+            {t.header.nav.map((item) => {
+              const active = pathname === item.path;
+              return (
+                <Link
+                  key={item.key}
+                  to={item.path}
+                  aria-current={active ? "page" : undefined}
+                  className={[
+                    "flex items-center gap-1.5 rounded-md px-3 py-1.5 text-[13.5px] transition",
+                    active
+                      ? "bg-white/[0.06] text-zinc-100"
+                      : "text-zinc-400 hover:text-zinc-100",
+                  ].join(" ")}
+                >
+                  {item.key === "watchlist" && <Bookmark size={13} />}
+                  {item.label}
+                  {item.key === "watchlist" && savedCount > 0 && (
+                    <span className="ml-0.5 rounded-full bg-indigo-500/20 px-1.5 py-px text-[10.5px] font-semibold text-indigo-300">
+                      {savedCount}
+                    </span>
+                  )}
+                </Link>
+              );
+            })}
           </nav>
         )}
 
-        {!isGptMode ? (
+        {/* Only on /browse — that's the one route that renders SearchResults,
+            so anywhere else the box would dispatch into a view nobody sees. */}
+        {!isGptMode && pathname === "/browse" ? (
           <form
             role="search"
             onSubmit={(e) => {
