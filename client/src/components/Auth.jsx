@@ -135,7 +135,6 @@ const Auth = () => {
     if (!isValid) return;
 
     setSubmitting(true);
-
     if (isSignUp) {
       createUserWithEmailAndPassword(auth, values.email, values.password)
         .then((userCredentials) => {
@@ -150,8 +149,11 @@ const Auth = () => {
         .catch((error) => setFormError(getAuthErrorMessage(error)))
         .finally(() => setSubmitting(false));
     } else {
+      console.log("1. User created", values.email);
       signInWithEmailAndPassword(auth, values.email, values.password)
-        .then(() => {})
+        .then(() => {
+          console.log("logged in successfully");
+        })
         .catch((error) => setFormError(getAuthErrorMessage(error)))
         .finally(() => setSubmitting(false));
     }
