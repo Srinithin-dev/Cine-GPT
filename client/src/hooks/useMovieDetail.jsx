@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { OPTIONS } from "../utils/constants";
 
 const useMovieDetail = (id) => {
-  const [MovieDetail, setMovieDetail] = useState([]);
+  const [movieDetail, setMovieDetail] = useState({});
 
   useEffect(() => {
     async function getMovieById() {
@@ -18,17 +18,23 @@ const useMovieDetail = (id) => {
         `https://api.themoviedb.org/3/movie/${id}/credits`,
         OPTIONS,
       );
-      const data = new Promise((resolve, reject) => {
-        console.log(resolve, "promise response");
-      });
-      console.log(await data, "data");
-      Promise.all([url, trailer, cast]).then(async (res) => {
-        console.log(res, "response");
-      });
+
+      const [movieResponse, videoResponse, creditsResponse] = await Promise.all(
+        [url, trailer, cast],
+      )
+        .then((response) => response)
+        .catch((e) => e);
+
+      const obj = {
+        movieDetails: await movieResponse.json(),
+        video: await videoResponse.json(),
+        credits: await creditsResponse.json(),
+      };
+      setMovieDetail({ [id]: obj });
     }
     getMovieById();
   }, []);
-  return { movie: MovieDetail };
+  return { movie: movieDetail };
 };
 
 export default useMovieDetail;
