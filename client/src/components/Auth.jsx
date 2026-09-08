@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import {
   Eye,
   EyeOff,
@@ -14,7 +14,6 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { auth, signInWithPopup, GoogleAuthProvider } from "../utils/firebase";
-import { useNavigate } from "react-router";
 import {
   validateFields,
   validateName,
@@ -164,6 +163,7 @@ const Auth = () => {
       setFormError(getAuthErrorMessage(error));
     });
   };
+
   return (
     <div className="cg-aurora relative min-h-screen w-full overflow-hidden bg-[#0A0A0F]">
       <div className="cg-grid absolute inset-0 opacity-70" />

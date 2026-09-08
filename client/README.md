@@ -29,3 +29,4 @@
 - Individual Movies details view
 - Movie Added into the list to watch
 - (Bug Fix) - useAuthorization hook navigate the route to browse page
+- Filled the View Movie Page with respective details using the apis (videos, cast and crew, movie details)

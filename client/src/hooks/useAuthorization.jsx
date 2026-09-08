@@ -13,7 +13,7 @@ export default function useAuthorization() {
       if (user) {
         const { uid, displayName, photoURL, email } = user;
         dispatch(addUser({ id: uid, email, displayName, photoURL }));
-        // navigate("/browse");
+        navigate("/browse");
       } else {
         dispatch(removeUser());
         navigate("/");

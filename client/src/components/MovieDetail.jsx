@@ -104,24 +104,7 @@ const MovieDetail = () => {
   const passed = location.state?.movie ?? null;
 
   const { movie } = useMovieDetail(id);
-  // const movie = {
-  //   adult: false,
-  //   backdrop_path: "/r57L2UBLPKcHdZQYg8tagv9XqK2.jpg",
-  //   genre_ids: [12, 28, 14],
-  //   id: 1368337,
-  //   title: "The Odyssey",
-  //   original_language: "en",
-  //   original_title: "The Odyssey",
-  //   overview:
-  //     "Odysseus, the legendary King of Ithaca, embarks on a long and perilous journey home following the Trojan War. Throughout his voyage, he is forced to confront the whims of gods, mythological monsters, and trials that stretch both his cunning and his humanity to the breaking point.",
-  //   popularity: 778.47,
-  //   poster_path: "/5rhTDKUhPYvpdQIijFIs5VoWsON.jpg",
-  //   release_date: "2026-07-15",
-  //   softcore: false,
-  //   video: false,
-  //   vote_average: 7.991,
-  //   vote_count: 2926,
-  // };
+  console.log(movie, "movie");
   const loading = !movie;
 
   const fromLabel = "";
@@ -132,25 +115,35 @@ const MovieDetail = () => {
   //       ? t.detail.fromSearch
   //       : t.detail.fromBrowse;
 
-  const cast = movie?.credits?.cast?.slice(0, 12) ?? [];
+  const cast = movie[id]?.credits?.cast?.slice(0, 12) ?? [];
+
   const crew =
-    movie?.credits?.crew?.filter((person) =>
+    movie[id]?.credits?.crew?.filter((person) =>
       ["Director", "Writer", "Screenplay", "Original Music Composer"].includes(
         person.job,
       ),
     ) ?? [];
+
   const trailer =
-    movie?.videos?.results?.find((video) => video.type === "Trailer") ?? null;
+    movie[id]?.video?.results?.find((video) => video.type === "Trailer") ??
+    null;
+
   const similar = movie?.similar?.results ?? [];
   const providers = movie?.["watch/providers"]?.results?.IN?.flatrate ?? [];
 
   const displayTitle = movie?.title || movie?.name || "";
-  const year = movie?.release_date ? movie.release_date.slice(0, 4) : null;
+  const year = movie[id]?.movieDetails?.release_date
+    ? movie[id]?.movieDetails.release_date.slice(0, 4)
+    : null;
   const rating =
-    typeof movie?.vote_average === "number" && movie.vote_average > 0
-      ? movie.vote_average.toFixed(1)
+    typeof movie[id]?.movieDetails?.vote_average === "number" &&
+    movie[id]?.movieDetails.vote_average > 0
+      ? movie[id]?.movieDetails.vote_average.toFixed(1)
       : null;
-  const runtime = formatRuntime(movie?.runtime, t.detail.minutes);
+  const runtime = formatRuntime(
+    movie[id]?.movieDetails?.runtime,
+    t.detail.minutes,
+  );
 
   return (
     <div className="min-h-screen bg-[#0A0A0F] text-zinc-100">
@@ -160,9 +153,9 @@ const MovieDetail = () => {
       ) : (
         <>
           <div className="relative h-[42vh] min-h-[280px] w-full overflow-hidden">
-            {movie.backdrop_path ? (
+            {movie[id]?.movieDetails.backdrop_path ? (
               <img
-                src={BACKDROP_CDN_URL + movie.backdrop_path}
+                src={BACKDROP_CDN_URL + movie[id]?.movieDetails.backdrop_path}
                 alt=""
                 aria-hidden
                 className="h-full w-full object-cover"
@@ -188,9 +181,9 @@ const MovieDetail = () => {
           <div className="mx-auto max-w-7xl px-6">
             <div className="-mt-28 flex flex-col gap-6 sm:flex-row sm:items-end">
               <div className="w-[140px] shrink-0 overflow-hidden rounded-xl bg-[#14141C] shadow-2xl shadow-black/60 ring-1 ring-white/10 sm:w-[200px]">
-                {movie.poster_path ? (
+                {movie[id]?.movieDetails.poster_path ? (
                   <img
-                    src={IMG_CDN_URL + movie.poster_path}
+                    src={IMG_CDN_URL + movie[id]?.movieDetails.poster_path}
                     alt={displayTitle}
                     className="aspect-[2/3] w-full object-cover"
                   />
@@ -264,7 +257,7 @@ const MovieDetail = () => {
                 <section>
                   <SectionTitle>{t.detail.overview}</SectionTitle>
                   <p className="max-w-2xl text-[14.5px] leading-relaxed text-zinc-300">
-                    {movie.overview || t.detail.noOverview}
+                    {movie[id]?.movieDetails.overview || t.detail.noOverview}
                   </p>
                 </section>
 
@@ -363,21 +356,20 @@ const MovieDetail = () => {
                   <dl>
                     <Fact
                       label={t.detail.status}
-                      value={movie.status}
+                      value={movie[id]?.movieDetails.status}
                       fallback={t.detail.notAvailable}
                     />
                     <Fact
                       label={t.detail.releaseDate}
                       value={
-                        movie.release_date
-                          ? new Date(movie.release_date).toLocaleDateString(
-                              locale,
-                              {
-                                year: "numeric",
-                                month: "long",
-                                day: "numeric",
-                              },
-                            )
+                        movie[id]?.movieDetails.release_date
+                          ? new Date(
+                              movie[id]?.movieDetails.release_date,
+                            ).toLocaleDateString(locale, {
+                              year: "numeric",
+                              month: "long",
+                              day: "numeric",
+                            })
                           : null
                       }
                       fallback={t.detail.notAvailable}
@@ -389,34 +381,42 @@ const MovieDetail = () => {
                     />
                     <Fact
                       label={t.detail.originalTitle}
-                      value={movie.original_title}
+                      value={movie[id]?.movieDetails.original_title}
                       fallback={t.detail.notAvailable}
                     />
                     <Fact
                       label={t.detail.originalLanguage}
-                      value={movie.original_language?.toUpperCase()}
+                      value={movie[
+                        id
+                      ]?.movieDetails.original_language?.toUpperCase()}
                       fallback={t.detail.notAvailable}
                     />
                     <Fact
                       label={t.detail.budget}
-                      value={formatMoney(movie.budget, locale)}
+                      value={formatMoney(
+                        movie[id]?.movieDetails.budget,
+                        locale,
+                      )}
                       fallback={t.detail.notAvailable}
                     />
                     <Fact
                       label={t.detail.revenue}
-                      value={formatMoney(movie.revenue, locale)}
+                      value={formatMoney(
+                        movie[id]?.movieDetails.revenue,
+                        locale,
+                      )}
                       fallback={t.detail.notAvailable}
                     />
                     <Fact
                       label={t.detail.countries}
-                      value={movie.production_countries
+                      value={movie[id]?.movieDetails.production_countries
                         ?.map((c) => c.name)
                         .join(", ")}
                       fallback={t.detail.notAvailable}
                     />
                     <Fact
                       label={t.detail.productionCompanies}
-                      value={movie.production_companies
+                      value={movie[id]?.movieDetails.production_companies
                         ?.map((c) => c.name)
                         .join(", ")}
                       fallback={t.detail.notAvailable}
