@@ -1,0 +1,19 @@
+{
+  "name": "gpt-backend",
+  "version": "1.0.0",
+  "description": "gpt-backend handles the gemini api keys and authorization",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.2.1",
+    "i": "^0.3.7",
+    "nodemon": "^3.1.14",
+    "npm": "^11.19.1"
+  }
+}

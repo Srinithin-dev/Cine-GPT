@@ -52,7 +52,6 @@ const Header = ({ user, onSignOut, isGptMode = false, onToggleGptMode }) => {
     if (ref.current) ref.current.value = "";
     dispatch(searchResults([]));
   };
-
   return (
     <header className="sticky top-0 z-50 border-b border-white/[0.06] bg-[#0A0A0F]/80 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-3 px-6 sm:gap-4">
@@ -191,7 +190,7 @@ const Header = ({ user, onSignOut, isGptMode = false, onToggleGptMode }) => {
         {/* Account */}
         <div className="flex shrink-0 items-center gap-2.5">
           <div className="grid h-8 w-8 place-items-center overflow-hidden rounded-full bg-gradient-to-br from-indigo-500/80 to-purple-500/80 text-[13px] font-semibold text-white">
-            {user?.photoURL ? (
+            {!user?.photoURL ? (
               <img
                 src={user.photoURL}
                 alt={user?.displayName || t.header.account}
